@@ -1,0 +1,92 @@
+﻿/*CSS for Side Navigation Bar*/
+.sidenav {
+    background-color: steelblue;
+    width: 150px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.sidenav a {
+    color: antiquewhite;
+    padding: 8px;
+    font-size: 24px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: darkseagreen;
+}
+
+/*Main text padding to account for nav bar*/
+.main {
+    padding-left: 180px;
+}
+
+/*lightsteelblue, peachpuff, antiquewhite*/
+a {
+    color: darkseagreen;
+}
+
+a:hover {
+    color: steelblue;
+}
+
+body {
+    background-color: dimgray;
+}
+
+h1 {
+    color: deepskyblue;
+}
+
+h2 {
+    color: antiquewhite;
+}
+
+/*Styling for image and h1 tag on index page*/
+.indexImg {
+    padding: 20px;
+    position: center;
+}
+
+/*Add Movies page styling*/
+.formDiv {
+    padding-left: 10px;
+    padding-right: 70%;
+}
+
+.formDiv h1 {
+    display: block;
+    text-align: center;
+}
+
+.formDiv label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    color: darkseagreen;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.formDiv input {
+    width: 200px;
+}
+
+.formDiv button {
+    border: none;
+    background-color: deepskyblue;
+    color: antiquewhite;
+    font-size: 20px;
+    padding: 8px 20px;
+    display: block;
+    margin: auto;
+}
+
+.formDiv button:hover {
+    background-color: steelblue;
+}
