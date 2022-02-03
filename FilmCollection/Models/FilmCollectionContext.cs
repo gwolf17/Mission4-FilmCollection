@@ -14,16 +14,65 @@ namespace FilmCollection.Models
             //Leave blank for now
         }
 
-        public DbSet<Movies> responses { get; set; }
+        public DbSet<Movies> responses { get; set; } //Movies model
+        public DbSet<Category> category { get; set; } //Category model
 
         //Seed the database
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category
+                {
+                    categoryId = 1,
+                    categoryName = "Action/Adventure"
+                },
+                new Category
+                {
+                    categoryId = 2,
+                    categoryName = "Comedy"
+                },
+                new Category
+                {
+                    categoryId = 3,
+                    categoryName = "Drama"
+                },
+                new Category
+                {
+                    categoryId = 4,
+                    categoryName = "Family"
+                },
+                new Category
+                {
+                    categoryId = 5,
+                    categoryName = "Horror/Suspense"
+                },
+                new Category
+                {
+                    categoryId = 6,
+                    categoryName = "Miscellaneous"
+                },
+                new Category
+                {
+                    categoryId = 7,
+                    categoryName = "Romance"
+                },
+                new Category
+                {
+                    categoryId = 8,
+                    categoryName = "Television"
+                },
+                new Category
+                {
+                    categoryId = 9,
+                    categoryName = "VHS"
+                }
+                );
+
             mb.Entity<Movies>().HasData(
                 new Movies
                 {
-                    MovieId = 1,
-                    category = "Action/Adventure",
+                    movieId = 1,
+                    categoryId = 1,
                     title = "Captain America Winter Soldier",
                     year = 2014,
                     director = "Anthony & Joe Russo",
@@ -34,8 +83,8 @@ namespace FilmCollection.Models
                 },
                 new Movies
                 {
-                    MovieId = 2,
-                    category = "Romance",
+                    movieId = 2,
+                    categoryId = 7,
                     title = "The Princess Bride",
                     year = 1987,
                     director = "Rob Reiner",
@@ -46,8 +95,8 @@ namespace FilmCollection.Models
                 },
                 new Movies
                 {
-                    MovieId = 3,
-                    category = "Rom-Com",
+                    movieId = 3,
+                    categoryId = 7,
                     title = "While you were Sleeping",
                     year = 1995,
                     director = "John Turteltaub",

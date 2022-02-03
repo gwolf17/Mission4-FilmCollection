@@ -10,30 +10,50 @@
 
     <!--Form to enter new movies into the database-->
     <form method="post">
-        <label asp-for="category">Category: </label>
-        <input asp-for="category" /><br />
+        <div asp-validation-summary="All"></div>    <!--Show the data validation errors-->
+
         <label asp-for="title">Title: </label>
         <input asp-for="title" /><br />
+
+        <label asp-for="categoryId">Category: </label>
+        <select asp-for="categoryId">
+            <option value="">Select a Category</option>
+            <!--Dynamically loop through all of the categories in the Category model-->
+            @foreach (Category c in ViewBag.Category)
+            {
+                <option value="@c.categoryId">@c.categoryName</option>
+            }
+        </select><br />
+
         <label asp-for="year">Year: </label>
         <input asp-for="year" /><br />
+
         <label asp-for="director">Director: </label>
         <input asp-for="director" /><br />
+
         <label asp-for="rating">Rating: </label>
         <select asp-for="rating">
+        <option value="">Select a Rating</option>
             <option value="G">G</option>
             <option value="PG">PG</option>
             <option value="PG-13">PG-13</option>
             <option value="R">R</option>
         </select><br />
+
         <label asp-for="edited">Edited: </label>
         <select>
+        <option value="">Is the movie Edited?</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
         </select><br />
+
         <label asp-for="lentTo">Lent To: </label>
         <input asp-for="lentTo" /><br />
+
         <label asp-for="notes">Notes: </label>
         <input asp-for="notes" /><br /><br />
+
         <button type="submit">Add Movie</button>
     </form>
+
 </div>

@@ -1,5 +1,6 @@
 ﻿using FilmCollection.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,12 @@ namespace FilmCollection.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
         //Setting up database
         private FilmCollectionContext MovieContext { get; set; }
 
-        public HomeController(ILogger<HomeController> logger, FilmCollectionContext movies)
+        public HomeController(FilmCollectionContext movies)
         {
-            _logger = logger;
             MovieContext = movies;
         }
 
@@ -32,9 +31,11 @@ namespace FilmCollection.Controllers
             return View();
         }
 
+        //Add movie view
         [HttpGet]
         public IActionResult AddMovie()
         {
+            ViewBag.Category = MovieContext.category.ToList(); //Create a list of categories to send to the Add Movies page
             return View();
         }
 
@@ -44,26 +45,70 @@ namespace FilmCollection.Controllers
             return View("AddMovie");
         }
 
+        //Add Movie view
         [HttpPost]
         public IActionResult AddMovie(Movies newm)
         {
-            //Create row in dataset
-            MovieContext.Add(newm);
+            if (ModelState.IsValid)  //If the model is valid, add the new record
+            {
+                //Create row in dataset
+                MovieContext.Add(newm);
+                MovieContext.SaveChanges();
+
+                return View("Confirmation");
+            }
+            else  //Otherwise, send the user back to the AddMovie view
+            {
+                ViewBag.Category = MovieContext.category.ToList();
+                return View();
+            }
+
+        }
+
+        //List movies view
+        [HttpGet]
+        public IActionResult ListMovies()
+        {
+            var MovieList = MovieContext.responses
+                .Include(x => x.category)
+                .OrderBy(x => x.category)
+                .ToList();
+            return View(MovieList);
+        }
+
+        //Edit View
+        [HttpGet]
+        public IActionResult Edit(int movieid)
+        {
+            ViewBag.Category = MovieContext.category.ToList();  //Resend the category list
+
+            var movie = MovieContext.responses.Single(x => x.movieId == movieid);  //Find the correct record
+
+            return View("AddMovie", movie);  //Send the user to the AddMovie view with the data in the movie variable
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movies m)
+        {
+            MovieContext.Update(m);  //Update the record and save the changes
             MovieContext.SaveChanges();
 
-            return View("Confirmation");
+            return RedirectToAction("ListMovies");  //Send back to the ListMovies view
         }
 
-
-        public IActionResult Privacy()
+        //Delete View
+        [HttpGet]
+        public IActionResult Delete(int movieid)
         {
-            return View();
+            var movie = MovieContext.responses.Single(x => x.movieId == movieid);  //Create variable to hold movie info
+            return View(movie);  //Pass info to the view
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Delete(Movies m)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            MovieContext.responses.Remove(m);
+            MovieContext.SaveChanges();
+            return Redirect("ListMovies");
         }
     }
 }

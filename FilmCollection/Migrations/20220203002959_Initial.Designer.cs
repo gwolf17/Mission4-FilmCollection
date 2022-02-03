@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmCollection.Migrations
 {
     [DbContext(typeof(FilmCollectionContext))]
-    [Migration("20220125182806_Initial")]
+    [Migration("20220203002959_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,15 +17,75 @@ namespace FilmCollection.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.22");
 
-            modelBuilder.Entity("FilmCollection.Models.Movies", b =>
+            modelBuilder.Entity("FilmCollection.Models.Category", b =>
                 {
-                    b.Property<int>("MovieId")
+                    b.Property<int>("categoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("category")
-                        .IsRequired()
+                    b.Property<string>("categoryName")
                         .HasColumnType("TEXT");
+
+                    b.HasKey("categoryId");
+
+                    b.ToTable("category");
+
+                    b.HasData(
+                        new
+                        {
+                            categoryId = 1,
+                            categoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            categoryId = 2,
+                            categoryName = "Comedy"
+                        },
+                        new
+                        {
+                            categoryId = 3,
+                            categoryName = "Drama"
+                        },
+                        new
+                        {
+                            categoryId = 4,
+                            categoryName = "Family"
+                        },
+                        new
+                        {
+                            categoryId = 5,
+                            categoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            categoryId = 6,
+                            categoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            categoryId = 7,
+                            categoryName = "Romance"
+                        },
+                        new
+                        {
+                            categoryId = 8,
+                            categoryName = "Television"
+                        },
+                        new
+                        {
+                            categoryId = 9,
+                            categoryName = "VHS"
+                        });
+                });
+
+            modelBuilder.Entity("FilmCollection.Models.Movies", b =>
+                {
+                    b.Property<int>("movieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("categoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("director")
                         .IsRequired()
@@ -52,15 +112,17 @@ namespace FilmCollection.Migrations
                     b.Property<int>("year")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("MovieId");
+                    b.HasKey("movieId");
+
+                    b.HasIndex("categoryId");
 
                     b.ToTable("responses");
 
                     b.HasData(
                         new
                         {
-                            MovieId = 1,
-                            category = "Action/Adventure",
+                            movieId = 1,
+                            categoryId = 1,
                             director = "Anthony & Joe Russo",
                             edited = false,
                             lentTo = "",
@@ -71,8 +133,8 @@ namespace FilmCollection.Migrations
                         },
                         new
                         {
-                            MovieId = 2,
-                            category = "Romance",
+                            movieId = 2,
+                            categoryId = 7,
                             director = "Rob Reiner",
                             edited = false,
                             lentTo = "Shannon",
@@ -83,8 +145,8 @@ namespace FilmCollection.Migrations
                         },
                         new
                         {
-                            MovieId = 3,
-                            category = "Rom-Com",
+                            movieId = 3,
+                            categoryId = 7,
                             director = "John Turteltaub",
                             edited = false,
                             lentTo = "",
@@ -93,6 +155,15 @@ namespace FilmCollection.Migrations
                             title = "While you were Sleeping",
                             year = 1995
                         });
+                });
+
+            modelBuilder.Entity("FilmCollection.Models.Movies", b =>
+                {
+                    b.HasOne("FilmCollection.Models.Category", "category")
+                        .WithMany()
+                        .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
